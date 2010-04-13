@@ -4,7 +4,7 @@
 	Plugin Name: Joind.in
 	Plugin URL: http://joind.in/about/wordpress
 	Description: Pull data from joind.in into your wordpress sidebar
-	Version: 0.1
+	Version: 1.1
 	Author: lornajane
 	Author URI: http://lornajane.net
 */
@@ -143,7 +143,7 @@ class Joindin_Widget extends WP_Widget {
 		</p>
 
 		
-	<?
+	<?php
 	}
 
     protected function joindin_request($host, $type, $action, $params) {
