@@ -35,6 +35,22 @@ function joindin_activate() {
 	wp_schedule_event(time(), 'daily', 'joindin_expire_data', array('where_sql' => 'WHERE time < DATESUB(NOW(), INTERVAL 1 DAY)'));
 	return true;
 }
+
+/**
+ * function to work around some issues I had with wp_clear_scheduled_hook
+ * where the arguments were a nested away from where they needed to be
+ * to match
+ */
+function joindin_clear_scheduled_hook( $hook ) {
+    $args = array_slice( func_get_args(), 1 );
+    if (is_array($args) && count($args) > 0) {
+        $args = $args[0];
+    }
+    while ( $timestamp = wp_next_scheduled( $hook, $args ) ) {
+        wp_unschedule_event( $timestamp, $hook, $args );
+    }
+}
+
 function joindin_deactivate() {
 	global $wpdb;
 
@@ -44,7 +60,8 @@ function joindin_deactivate() {
 	$wpdb->query($sql);
 
 	// clean up any cron jobs
-	wp_clear_scheduled_hook('joindin_expire_data');
+	joindin_clear_scheduled_hook('joindin_expire_data', array('where_sql' => 'WHERE time < DATESUB(NOW(), INTERVAL 1 DAY)'));
+
 	return true;
 }
 register_activation_hook(__FILE__, 'joindin_activate');
