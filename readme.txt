@@ -4,7 +4,7 @@ Donate link: http://pledgie.com/campaigns/7742
 Tags: event, talk, session, conference
 Requires at least: 2.8
 Tested up to: 2.9.2
-Stable tag: 1.1
+Stable tag: 1.2
 
 A flexible, configurable widget to add either events from the joind.in site or sessions for a particular event on that site to your sidebar
 
