@@ -171,6 +171,12 @@ class Joindin_Widget extends WP_Widget {
     protected function joindin_request($host, $type, $action, $params) {
 		global $wpdb;
 
+		/*
+		// allegedly needed for WP 3.0
+		if( !class_exists( 'WP_Http' ) )
+			include_once( ABSPATH . WPINC. '/class-http.php' );
+		*/
+
 		// hit the cache
 		$result = $wpdb->get_var("SELECT results from " . $wpdb->prefix . "joindin WHERE
 			host = '" . $wpdb->escape($host) . "' AND
@@ -199,14 +205,12 @@ class Joindin_Widget extends WP_Widget {
         }   
 
         $payload = json_encode($req);
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $host.'/api/'.urlencode($type));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type: application/json"));
-        $response = curl_exec($ch);
 
-        $result = json_decode($response);
+		$api_url = $host.'/api/'.urlencode($type);
+		$headers = array( 'Content-Type' => "application/json" );
+		$request = new WP_Http;
+		$response = $request->request( $api_url , array( 'method' => 'POST', 'body' => $payload, 'headers' => $headers ));
+        $result = json_decode($response['body']);
 
 		if(!empty($result)) {
 			// store in the cache
