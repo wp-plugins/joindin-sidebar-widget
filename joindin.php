@@ -4,7 +4,7 @@
 	Plugin Name: Joind.in
 	Plugin URL: http://joind.in/about/wordpress
 	Description: Pull data from joind.in into your wordpress sidebar
-	Version: 1.1
+	Version: 1.2
 	Author: lornajane
 	Author URI: http://lornajane.net
 */
@@ -42,6 +42,9 @@ function joindin_deactivate() {
 	$table_name = $wpdb->prefix . 'joindin';
 	$sql = 'DROP TABLE ' . $table_name ;
 	$wpdb->query($sql);
+
+	// clean up any cron jobs
+	wp_clear_scheduled_hook('joindin_expire_data');
 	return true;
 }
 register_activation_hook(__FILE__, 'joindin_activate');
