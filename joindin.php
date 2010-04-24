@@ -11,7 +11,6 @@
 
 function joindin_widget_init() {
 	register_widget('Joindin_Widget');
-	wp_schedule_event(time(), 'daily', 'joindin_expire_data', array('where_sql' => 'WHERE time < DATESUB(NOW(), INTERVAL 1 DAY)'));
 }
 
 add_action('widgets_init','joindin_widget_init');
@@ -31,6 +30,9 @@ function joindin_activate() {
 		results text)';
 
 	$wpdb->query($sql);
+
+	// add a cron job to clean up the data each day
+	wp_schedule_event(time(), 'daily', 'joindin_expire_data', array('where_sql' => 'WHERE time < DATESUB(NOW(), INTERVAL 1 DAY)'));
 	return true;
 }
 function joindin_deactivate() {
