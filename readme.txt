@@ -4,7 +4,7 @@ Donate link: http://pledgie.com/campaigns/7742
 Tags: event, talk, session, conference
 Requires at least: 2.8
 Tested up to: 2.9.2
-Stable tag: 1.1
+Stable tag: 1.2
 
 A flexible, configurable widget to add either events from the joind.in site or sessions for a particular event on that site to your sidebar
 
@@ -41,5 +41,9 @@ Comment on the plugin page what you want to do and why - someone may help!
 = 1.1 =
 Correcting a PHP short tag - thanks to @phpcodemonkey for the bug report
 
+= 1.2 =
+Fixing a **major** bug in this plugin, which registered the cron events repeatedly.  If you are upgrading please deactivate and reactivate your plugin after you upgrade!
+Switching over to using the wordpress http handling rather than requiring curl (thanks to James Collins who commented on my blog suggesting this)
+
 == Upgrade Notice ==
-Initial version
+Please deactivate and reactivate your plugin if upgrading from versions < 1.2
